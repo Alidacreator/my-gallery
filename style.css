@@ -1,0 +1,144 @@
+:root {
+    --primary-blue: #3A7AFE;
+    --glass: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-main: #ffffff;
+    --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body { background: #000000; color: var(--text-main); overflow-x: hidden; }
+
+/* Video Background Fitting */
+.video-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    object-fit: cover;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+    z-index: -1;
+}
+
+/* Home Circle Layout */
+.home-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-wrapper {
+    position: relative;
+    width: 1px; height: 1px; /* Anchor point */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Vertical and Horizontal Cross Lines */
+.circle-wrapper::before, .circle-wrapper::after {
+    content: '';
+    position: absolute;
+    background: linear-gradient(to right, transparent, var(--glass-border), transparent);
+    z-index: 10;
+}
+.circle-wrapper::before { width: 500px; height: 1px; }
+.circle-wrapper::after { width: 1px; height: 500px; background: linear-gradient(to bottom, transparent, var(--glass-border), transparent); }
+
+.album-card {
+    position: absolute;
+    width: 160px; height: 220px;
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    transform: translate(var(--x), var(--y));
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.album-card:hover {
+    transform: translate(var(--x), var(--y)) scale(1.1);
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 30px rgba(58, 122, 254, 0.4);
+}
+
+.album-cover { width: 100%; height: 70%; object-fit: cover; }
+.album-info { 
+    padding: 15px; 
+    height: 30%; /* Ensure info area is contained */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center text vertically */
+}
+.album-info p { font-size: 0.7rem; opacity: 0; transition: 0.3s; margin-top: 5px; color: #bbb; }
+.album-card:hover .album-info p { opacity: 1; }
+
+/* Album View Grid */
+.view-container {
+    min-height: 100vh;
+    padding: 100px 5% 50px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(20px);
+    z-index: 100;
+    position: relative;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.photo-item {
+    background: var(--glass);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+}
+
+.photo-item img, .photo-item video { width: 100%; height: 250px; object-fit: cover; }
+.photo-desc { padding: 15px; font-size: 0.85rem; }
+
+/* Back Button */
+.back-btn {
+    position: fixed;
+    top: 30px; left: 30px;
+    padding: 10px 20px;
+    background: var(--primary-blue);
+    border: none; color: white;
+    border-radius: 5px; cursor: pointer;
+    z-index: 250;
+}
+
+/* Fullscreen Modal */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+}
+.modal-content { max-width: 90%; max-height: 90%; position: relative; }
+.modal img, .modal video { width: 100%; max-height: 80vh; border-radius: 10px; }
+.modal-close { position: absolute; top: -50px; right: 0; font-size: 2rem; cursor: pointer; }
+
+@media (max-width: 768px) {
+    .album-card { width: 120px; height: 160px; }
+    .album-info p { opacity: 1; font-size: 0.6rem; }
+}
